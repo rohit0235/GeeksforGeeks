@@ -1,4 +1,7 @@
-int countBuildings(vector<int> &height) {
+class Solution {
+  public:
+    // Returns count buildings that can see sunlight
+    int countBuildings(vector<int> &height) {
         // code here
         int n=height.size();
         int maxi=height[0];
@@ -10,3 +13,7 @@ int countBuildings(vector<int> &height) {
                     }
         }
         return count;
+        
+        
+    }
+};

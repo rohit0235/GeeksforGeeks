@@ -13,20 +13,20 @@ class Solution {
               
                int n=s.length();
                 
-                int i=0, j=0;
-                unordered_map<char, int>mpp;
-                int maxi=0;
-                
-                for(; j<n; j++){
-                    mpp[s[j]]++;
-                    for(; i<n && mpp[s[j]]>=2; i++){
-                        mpp[s[i]]--;
-                        if(mpp[s[i]]==0){
-                            mpp.erase(s[i]);
-                        }
+               int l=0;
+               int r=0;
+               int maxi=0;
+               vector<int>mp(256,-1);
+               while (r<n){
+                   
+                    if (mp[s[r]]!=-1){
+                        l=max(mp[s[r]]+1,l);
                     }
-                    maxi=max(maxi, j-i+1);
-                }
+                    maxi=max(maxi,r-l+1);
+                    mp[s[r]]=r;
+                    r++;
+                   
+               }
                 
                 return maxi;
                

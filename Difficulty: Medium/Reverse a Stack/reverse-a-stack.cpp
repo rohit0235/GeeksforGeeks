@@ -11,18 +11,44 @@ using namespace std;
 class Solution{
 public:
 // void solve(stack<int> &St)
+void insertatbottom(stack<int> &St,int element){
+               if (St.empty()){
+                   St.push(element);
+                   return ;
+               }
+               
+               int top=St.top();
+               St.pop();
+             insertatbottom(St,element);
+             St.push(top);
+               
+           }
     void Reverse(stack<int> &St){
-        
-        queue<int>s;
-        while (!St.empty()){
-            s.push(St.top());
-            St.pop();
+          if (St.empty()) {
+        return;
         }
         
-        while (!s.empty()){
-            St.push(s.front());
-            s.pop();
-        }
+        int top=St.top();
+        St.pop();
+        
+        Reverse(St);
+        insertatbottom(St,top);
+        
+        
+        
+        
+        
+        
+        // queue<int>s;
+        // while (!St.empty()){
+        //     s.push(St.top());
+        //     St.pop();
+        // }
+        
+        // while (!s.empty()){
+        //     St.push(s.front());
+        //     s.pop();
+        // }
     }
 };
 

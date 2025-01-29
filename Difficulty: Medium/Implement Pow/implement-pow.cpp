@@ -8,13 +8,31 @@ using namespace std;
 // User function Template for C++
 class Solution {
   public:
+    
     double power(double b, int e) {
-        //   double ans=1;
-        //   for (int i=0;i<abs(e);i++){
-        //       ans*=b;
+        
+         if (b==0) return 0;
+         if (e==0) return 1;
+   
+        //   double ans=b;
+        //   for (int i=0;i<abs(e)-1;i++){
+        //      ans*=b;
+        //     //  cout<<ans<<" ";
+              
         //   }
-        //   return ans;
-        return pow(b,e);
+          if (e<0) return 1/power( b,-e) ;
+          
+           double temp=power(b,e/2);
+           
+           if (e%2==0) {
+                return temp*temp;
+           }
+           else{
+               return b*temp*temp;
+           }
+
+          
+        // return pow(b,e);
     }
 };
 

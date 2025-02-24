@@ -8,26 +8,32 @@ class Solution {
   public:
     // Function to calculate the span of stockâ€™s price for all n days.
     vector<int> calculateSpan(vector<int>& arr) {
-          stack<pair<int,int>>st;
+            
+           // 
+           stack<int>s;
            int n=arr.size();
-           vector<int>ans;
+            vector<int>ans(arr.size(),0);
            for (int i=0;i<n;i++){
-                 
-                 int span=1;
-                 
-                 while (!st.empty() && st.top().first<=arr[i]){
-                      span=span+st.top().second;
-                      st.pop();
-                 }
-                 
-                 st.push(make_pair(arr[i],span));
-                 ans.push_back(span);
-               
+                   
+                   while (!s.empty() && arr[s.top()]<=arr[i]){
+                       s.pop();
+                   }  
+                   
+                   if (s.empty()){
+                       ans[i]=i+1;
+                   }
+                   else{
+                       ans[i]=i-s.top();
+                   }
+                   
+                   s.push(i);
+                      
            }
            
            return ans;
     }
 };
+
 
 //{ Driver Code Starts.
 

@@ -3,7 +3,8 @@
 using namespace std;
 
 // Tree Node
-struct Node {
+class Node {
+  public:
     int data;
     Node *left;
     Node *right;
@@ -79,6 +80,7 @@ Node *buildTree(string str) {
 
 
 // } Driver Code Ends
+
 // User Function template for C++
 
 // Structure of node
@@ -147,6 +149,8 @@ class Solution {
         
     }
 };
+
+
 
 //{ Driver Code Starts.
 

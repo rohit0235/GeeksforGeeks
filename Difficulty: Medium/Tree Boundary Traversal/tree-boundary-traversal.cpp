@@ -1,93 +1,3 @@
-//{ Driver Code Starts
-#include <bits/stdc++.h>
-using namespace std;
-#define MAX_HEIGHT 100000
-
-// Tree Node
-class Node {
-  public:
-    int data;
-    Node* left;
-    Node* right;
-
-    // Constructor to initialize a new node
-    Node(int val) {
-        data = val;
-        left = NULL;
-        right = NULL;
-    }
-};
-
-// Utility function to create a new Tree Node
-Node* newNode(int val) {
-    return new Node(val);
-}
-
-// Function to Build Tree
-Node* buildTree(string str) {
-    // Corner Case
-    if (str.length() == 0 || str[0] == 'N')
-        return NULL;
-
-    // Creating vector of strings from input
-    // string after splitting by space
-    vector<string> ip;
-
-    istringstream iss(str);
-    for (string str; iss >> str;)
-        ip.push_back(str);
-
-    // Create the root of the tree
-    Node* root = newNode(stoi(ip[0]));
-
-    // Push the root to the queue
-    queue<Node*> queue;
-    queue.push(root);
-
-    // Starting from the second element
-    int i = 1;
-    while (!queue.empty() && i < ip.size()) {
-
-        // Get and remove the front of the queue
-        Node* currNode = queue.front();
-        queue.pop();
-
-        // Get the current node's value from the string
-        string currVal = ip[i];
-
-        // If the left child is not null
-        if (currVal != "N") {
-
-            // Create the left child for the current node
-            currNode->left = newNode(stoi(currVal));
-
-            // Push it to the queue
-            queue.push(currNode->left);
-        }
-
-        // For the right child
-        i++;
-        if (i >= ip.size())
-            break;
-        currVal = ip[i];
-
-        // If the right child is not null
-        if (currVal != "N") {
-
-            // Create the right child for the current node
-            currNode->right = newNode(stoi(currVal));
-
-            // Push it to the queue
-            queue.push(currNode->right);
-        }
-        i++;
-    }
-
-    return root;
-}
-
-
-// } Driver Code Ends
 /*
 // Tree Node
 class Node {
@@ -107,82 +17,75 @@ class Node {
 
 class Solution {
   public:
+    
+    bool isleaf(Node *root){
+         if (root->left==NULL && root->right==NULL){
+              return true;
+         }
+         
+         return false;
+    }
+    void lsolve(Node *root, vector<int>&res){
+           if (root==NULL) return;
+           
+           
+           Node *curr=root->left;
+           
+           while (curr){
+              if (!isleaf(curr))  res.push_back(curr->data);
+                if (curr->left) curr=curr->left;
+                else curr=curr->right;
+           }
+           
+           
+    }
   
- void leftsub(Node *root, vector<int> &ans) {
-        if (root == NULL || (root->left == NULL && root->right == NULL)) {
-            return;
-        }
-        ans.push_back(root->data);
-        if (root->left) 
-            leftsub(root->left, ans);
-        else 
-            leftsub(root->right, ans);  // In case there is no left child, go right
+    void rsolve(Node *root, vector<int>&res){
+           if (root==NULL) return;
+           
+           
+           Node *curr=root->right;
+         vector<int>r;
+         
+           while (curr){
+               if (!isleaf(curr))     r.push_back(curr->data);
+                if (curr->right) curr=curr->right;
+                else curr=curr->left;
+           }
+           
+          reverse(r.begin(),r.end());
+          
+          for(int i:r){
+               res.push_back(i);
+          }
+           
+           
     }
-
-    void rightsub(Node *root, vector<int> &ans) {
-        if (root == NULL || (root->left == NULL && root->right == NULL)) {
-            return;
-        }
-        if (root->right) 
-            rightsub(root->right, ans);
-        else 
-            rightsub(root->left, ans);  // In case there is no right child, go left
-
-        ans.push_back(root->data);  // Push after recursion for bottom-up order
+  
+    void osolve(Node *root, vector<int>&res){
+             if (root==NULL) return;
+           
+           
+             if (root->left==NULL && root->right==NULL) res.push_back(root->data);
+             
+             osolve(root->left,res);
+             osolve(root->right,res);
     }
-
-    void addleaf(Node *root, vector<int> &ans) {
-         if (root == NULL) return;
-        if (root->left == NULL && root->right == NULL) {
-            // Avoid adding root node again if it's the only node
-            if (ans.empty() || ans[0] != root->data) {
-                ans.push_back(root->data);
-            }
-            return;
-        }
-        addleaf(root->left, ans);
-        addleaf(root->right, ans);
-    }
-
+  
     vector<int> boundaryTraversal(Node *root) {
-        vector<int> ans;
-        if (root == NULL) return ans;
+        // code here
+                      if (root==NULL) return {};
+           vector<int>res;
+           res.push_back(root->data);
+           if (root->left==NULL && root->right==NULL) return res;
+          lsolve(root,res);    
+          osolve(root,res);
+          rsolve(root,res);
+   
+     
+          
+          return res;
         
-        ans.push_back(root->data);
-
-        leftsub(root->left, ans);    // Add left boundary (excluding leaves)
-        addleaf(root, ans);          // Add all leaf nodes
-
-        vector<int> rightNodes;
-        rightsub(root->right, rightNodes);  // Collect right boundary nodes
         
-        ans.insert(ans.end(), rightNodes.begin(), rightNodes.end());  // Append in correct order
-        return ans;
     }
 };
-
-//{ Driver Code Starts.
-
-/* Driver program to test size function */
-int main() {
-    int t;
-    string tc;
-    getline(cin, tc);
-    t = stoi(tc);
-    while (t--) {
-        string s, ch;
-        getline(cin, s);
-        Node* root = buildTree(s);
-        Solution ob;
-        vector<int> res = ob.boundaryTraversal(root);
-        for (int i : res)
-            cout << i << " ";
-        cout << endl;
-
-        cout << "~"
-             << "\n";
-    }
-    return 0;
-}
-
-// } Driver Code Ends

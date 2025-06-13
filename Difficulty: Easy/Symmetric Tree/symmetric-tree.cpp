@@ -12,24 +12,26 @@ public:
 */
 class Solution {
   public:
-   
-    bool solve(Node *first , Node *second){
-              
-                 if (first==NULL && second==NULL)  return true;
-                
-                 if (!first || !second) return false;
+  
+       bool solve(Node *l , Node *r){
+             
+               if (l==NULL && r==NULL) return true;
+               if (l==NULL || r==NULL) return false;
                  
-                 
-                 if (first->data != second->data  ) return false;
-                 
-                 
-                 return  solve(first->left ,second->right) && solve(first->right ,second->left);
-           
-    }
+             if (l->data!=r->data) return false;
+             
+             
+             return solve(l->left,r->right) || solve(l->right,r->left); 
+             
+       }
+      
+  
+  
     bool isSymmetric(Node* root) {
         // Code here
-          if (root==NULL) return true;
-         
+        if (root==NULL)return true;
+        
+        
         return solve(root->left,root->right);
     }
 };

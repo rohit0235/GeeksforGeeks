@@ -15,8 +15,7 @@ void unionSet(int par[], int x, int z) {
     
      int lrep = find(par,x);
      int jrep = find(par,z);
-    //  int jrep = par[z];
-     
+
      par[lrep]=jrep;
      
      return ;

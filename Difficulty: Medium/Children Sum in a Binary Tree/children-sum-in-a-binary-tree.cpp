@@ -15,29 +15,40 @@ struct Node
 
 class Solution {
   public:
-    // Function to check whether all nodes of a tree have the value
-    // equal to the sum of their child nodes.
-    int isSumProperty(Node *root) {
-        // Add your code here
-         
-         if (root==NULL) return 1;
+   
+    bool solve(Node *root){
+        
+          
+               if (root==NULL) return 1;
         if (!root->left && !root->right ){
               return 1;
          }
-         int lr=0;
-         if (root->left  ){
-              lr+=(root->left->data);
-         }
-         int hr=0;
- 
-         if ( root->right ){
-              hr+=(root->right->data);
-         }
-         
 
+              
+         int total =0;
+         if (root->left ) total+=root->left->data;
+         if (root->right ) total+=root->right->data;
+           
          
-         if (root->data==(lr+hr ) && isSumProperty(root->left ) && isSumProperty(root->right)) return 1;
-         else return 0;
-        
+             
+         
+         bool i = (total==root->data) && solve(root->left) && solve( root->right);
+               
+
+         return i;
+         
+           
+          
+           
+    }
+    int isSumProperty(Node *root) {
+              
+              if (root==NULL) return 1;
+              
+              
+              return solve(root);
+              
+       
+       
     }
 };

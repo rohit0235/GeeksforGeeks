@@ -1,61 +1,94 @@
-//{ Driver Code Starts
-// Initial template for C++
-
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
-// User function template for C++
-
 class Solution {
   public:
-    int median(vector<vector<int>> &mat) {
-            
-            vector<int>check;
-            int row=mat.size();
-            int col=mat[0].size();
-            
-            for (int i=0;i<row;i++){
-                
-                for (int j=0;j<col;j++){
-                    check.push_back(mat[i][j]);
-                    
-                }
-            }
-            
-            sort(check.begin(),check.end());
-            
-            int total=row*col;
-            
-            if (total%2==1){
-                return check[total/2];
-            }
+  
+  
+    int solve(vector<vector<int>> &mat, int mid ) {
+         
           
+               int n = mat.size();
+               int m= mat[0].size();
+              
+                 int smalle =0;
+                
+                for(int i=0;i<n;i++){
+                      
+                           int low = 0;
+                           int high = m-1;
+                           int idx = m;           
+                           while (low<=high){
+                               
+                                  int mid2 = low + (high-low)/2;
+                                 
+                                  if (mat[i][mid2]<=mid){
+                            
+                                       low = mid2+1;
+                                 }
+                                 else{ 
+                                      
+                                      idx =mid2; 
+                                      high =mid2 -1;
+                                 }
+                                 
+                           }
+                            
+                            
+                            // cout<<idx<<" ";
+                           // 4 7 5 9 
+                           smalle+=idx;
+                         
+                }
+                
+                // cout<<endl;
+                return smalle;
+                
+                
+                
+            
+        
+    }
+   
+    int median(vector<vector<int>> &mat) {
+        // code here
+          
+              int n = mat.size();
+              int m= mat[0].size();
+              
+              int low = 0;int high = 0;
+              for(int i=0;i<n;i++){
+                        
+                      low = min(mat[i][0],low);  
+                      high = max(mat[i][m-1],high);  
+                     
+              }
+              
+            //  cout<<low<<" "<<high;
+              
+              int x = (n*m)/2;
+              while (low<=high){
+                   
+                     
+                       int mid = low + (high-low)/2;
+                       
+                       int smalle = solve(mat, mid );
+                       
+                    //   cout<<mid<<" "<<smalle<<endl;
+                       if (smalle<=x){
+                            low = mid+1;
+                       }
+                       else{
+                            high = mid -1;
+                       }
+                            
+                       
+                     
+              }
+              
+              
+              return low;
+              
+              
+          
+          
+        
     }
 };
-
-
-//{ Driver Code Starts.
-
-int main() {
-    int t;
-    cin >> t;
-    while (t--) {
-        int r, c;
-        cin >> r >> c;
-        vector<vector<int>> matrix(r, vector<int>(c));
-        for (int i = 0; i < r; ++i)
-            for (int j = 0; j < c; ++j)
-                cin >> matrix[i][j];
-        Solution obj;
-        int ans = -1;
-        ans = obj.median(matrix);
-        cout << ans << "\n";
-
-        cout << "~"
-             << "\n";
-    }
-    return 0;
-}
-// } Driver Code Ends

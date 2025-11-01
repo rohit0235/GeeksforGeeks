@@ -15,25 +15,19 @@ class Node {
 class Solution {
   public:
     Node *reverse(Node *head) {
-                  
-                  
-                  Node *curr = head;
-                  if (head==NULL) return nullptr;
-                  
-                  Node *prevn = NULL;
-                  while (curr){
-                       
-                       
-                       Node *next =curr->next;
-                       curr->prev=next;
-                       curr->next=prevn;
-                       
-                       prevn= curr;
-                       curr=next;
-                        
-                  }
-                  return prevn;
-                  
-        
+        // code here
+           
+              Node *prevn = NULL;
+              Node *temp =head;
+              
+              while (temp){
+                     Node *nxt= temp->next;
+                     temp->prev = nxt;
+                     temp->next = prevn;
+                     prevn = temp;
+                     temp =nxt;
+              }
+              return prevn;
+          
     }
 };

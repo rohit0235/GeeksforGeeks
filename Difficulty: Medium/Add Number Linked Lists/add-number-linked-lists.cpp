@@ -1,154 +1,129 @@
-//{ Driver Code Starts
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
-using namespace std;
-
-/* Linked list Node */
-struct Node {
+/*
+class Node {
+  public:
     int data;
-    struct Node* next;
-
+    Node* next;
     Node(int x) {
         data = x;
         next = NULL;
     }
 };
-
-Node* buildList() {
-    vector<int> arr;
-    string input;
-    getline(cin, input);
-    stringstream ss(input);
-    int number;
-    while (ss >> number) {
-        arr.push_back(number);
-    }
-    if (arr.empty()) {
-        return NULL;
-    }
-    int val = arr[0];
-    int size = arr.size();
-
-    Node* head = new Node(val);
-    Node* tail = head;
-
-    for (int i = 1; i < size; i++) {
-        val = arr[i];
-        tail->next = new Node(val);
-        tail = tail->next;
-    }
-
-    return head;
-}
-
-void printList(Node* n) {
-    while (n) {
-        cout << n->data << " ";
-        n = n->next;
-    }
-    cout << endl;
-}
-
-
-// } Driver Code Ends
-/* node for linked list:
-
-struct Node {
-    int data;
-    struct Node* next;
-    Node(int x) {
-        data = x;
-        next = NULL;
-    }
-};
-
 */
 
-Node *reverse(Node* head){
-     
-     Node *current=head;
-     Node *prev=NULL;
-     Node *next;
-     
-     while (current){
-          next=current->next;
-          current->next=prev;
-          
-          prev=current;
-          
-         current=next;
-     }
-     return prev;
-    
-}
 class Solution {
   public:
-    Node* addTwoLists(Node* num1, Node* num2) {
+    
+    Node * reverse(Node *head){
+            
+            Node *prev=NULL;
+            Node *curr = head;
+     
+            while (curr){
+                  
+                  Node *nxt = curr->next;
+                  curr->next = prev;
+                  prev= curr;
+                  curr=nxt;
+                   
+            }
+            return prev;
+            
+            
+    }
+    
+    Node* addTwoLists(Node* head1, Node* head2) {
+        // code here
+             
+             Node *dummy = new Node(-1);
+             Node *curr = dummy;
+             
+            //  Node *curr = head1;
+            //  Node *prev=NULL
+              
+           head1=  reverse(head1);
+          head2=    reverse(head2);
            
-           num1 = reverse(num1);
-        num2 = reverse(num2);
-
-        if (num1 == NULL) return num2;
-        if (num2 == NULL) return num1;
-
-        int carry = 0;
-        Node* dummy = new Node(-1); // Dummy node to simplify operations
-        Node* current = dummy;     // Pointer to build the result list
-
-        while (num1 || num2 || carry) {
-            int sum = carry; // Start with the carry value
-
-            if (num1) {
-                sum += num1->data;
-                num1 = num1->next;
-            }
-
-            if (num2) {
-                sum += num2->data;
-                num2 = num2->next;
-            }
-
-            // Create a new node for the digit
-            current->next = new Node(sum % 10);
-            current = current->next;
-
-            // Update the carry
-            carry = sum / 10;
-        }
-
-        // Reverse the result list
-        Node* result = reverse(dummy->next);
-
-        // Clean up leading zeros
-        while (result && result->data == 0 && result->next) {
-            result = result->next;
-        }
-
-        return result;
-      
-      
+           
+          Node *temp1=head1;
+          Node *temp2=head2;
+          int carry=0;
+          while (temp1 && temp2) {
+                  
+                   int sum = temp1->data +temp2->data+carry;
+                   
+                   if (sum>=10){
+                          carry=1;
+             Node *newnode = new Node(sum%10);
+                 curr->next = newnode;
+                 curr=curr->next;
+                   } else{
+                        carry=0;
+                             Node *newnode = new Node(sum);
+                             curr->next = newnode;
+                             curr=curr->next;
+                   }
+                         
+            
+                
+                    temp2=temp2->next;
+                         temp1=temp1->next;
+          }
+          while (temp1 ) {
+                  
+                   int sum = temp1->data +carry;
+                              if (sum>=10){
+                          carry=1;
+             Node *newnode = new Node(sum%10);
+                 curr->next = newnode;
+                 curr=curr->next;
+                   } else{
+                        carry=0;
+                             Node *newnode = new Node(sum);
+                             curr->next = newnode;
+                             curr=curr->next;
+                   }
+                         
+                     temp1=temp1->next;
+               
+          }
+          while (temp2) {
+                  
+                   int sum = temp2->data +carry;
+                   
+                      if (sum>=10){
+                          carry=1;
+             Node *newnode = new Node(sum%10);
+                 curr->next = newnode;
+                 curr=curr->next;
+                   } else{
+                        carry=0;
+                             Node *newnode = new Node(sum);
+                             curr->next = newnode;
+                             curr=curr->next;
+                   }
+                         
+                   temp2=temp2->next;
+               
+          }
+          
+          
+          if (carry==1){
+                 Node *newNode =new Node(1);
+                 curr->next = newNode;
+                 curr=curr->next;
+          }
+          
+          dummy = dummy->next;
+          dummy = reverse(dummy);
+          
+          Node *temp=dummy;
+          while (temp){
+            if (temp->data==0) dummy=dummy->next;
+            else break;
+            temp=temp->next;
+          }
+          return dummy;
+           
+          
     }
 };
-
-
-//{ Driver Code Starts.
-
-int main() {
-    int t;
-    cin >> t;
-    cin.ignore(); // To ignore the newline character after the integer input
-
-    while (t--) {
-        Node* num1 = buildList();
-        Node* num2 = buildList();
-        Solution ob;
-        Node* res = ob.addTwoLists(num1, num2);
-        printList(res);
-        cout << "~" << endl;
-    }
-    return 0;
-}
-
-// } Driver Code Ends

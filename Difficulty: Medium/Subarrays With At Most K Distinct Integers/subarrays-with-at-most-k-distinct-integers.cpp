@@ -1,34 +1,31 @@
 class Solution {
   public:
-    int countAtMostK(vector<int> &s, int k) {
+    int countAtMostK(vector<int> &arr, int k) {
         // code here
+             unordered_map<int,int>mp;
+        int n = arr.size();
+        int l=0;
+        int ans =0;
+        for(int r=0;r<n;r++){
+              
+                mp[arr[r]]++;
+                
+                while (mp.size()>k){
+                      mp[arr[l]]--;
+                      if(mp[arr[l]]==0) mp.erase(arr[l]);
+                      l++;
+                }
+                
+                ans+=r-l+1;
+              
+              
+        }
         
-                      int l=0;
-            int maxlength=0;
-            int n=s.size();
-            unordered_map<int,int>mp;
-            
-            
-            for(int r =0;r<n;r++){
-                 
-                 
-                   mp[s[r]]++;
-                   
-                   while (l<=r && mp.size()>k){
-                         
-                         mp[s[l]]--;
-                         if (mp[s[l]]==0) mp.erase(s[l]);
-                         
-                         l++;
-                         
-                   }
-                   
-                   
-                     maxlength+=(r-l+1);
-                 
-                 
-            }
-            return maxlength;
-           
+        return ans;
+        
+        
+              
+             
+          
     }
 };

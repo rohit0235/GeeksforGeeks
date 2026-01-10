@@ -1,30 +1,26 @@
 class Solution {
   public:
-  int check(vector<int>&mp){
-      int cnt=0;
-      for(int i=0;i<26;i++){
-         if(mp[i]!=0)cnt++; 
-      }
-      return cnt;
-  }
-  int atmost(string &s,int k){
-        int n=s.size();
-        vector<int>mp(26,0);
-        int i=0,j=0;
-        int count=0;
-        while(j<n){
-            mp[s[j]-'a']++;
-            while(check(mp)>k){
-                mp[s[i]-'a']--;
-                i++;
+int countAtMostK(string& s, int k) {
+        if (k <= 0) return 0;
+        int l = 0, count = 0, distinct = 0;
+        int n = s.size();
+        int freq[128] = {0};
+
+        for (int r = 0; r < n; r++) {
+            if (freq[s[r]] == 0) distinct++;
+            freq[s[r]]++;
+
+            while (distinct > k) {
+                freq[s[l]]--;
+                if (freq[s[l]] == 0) distinct--;
+                l++;
             }
-            count+=(j-i+1); // substring count
-            j++;
+            count += (r - l + 1);
         }
         return count;
-  }
-    int countSubstr(string& s, int k) {
-        // code here.
-        return atmost(s,k)-atmost(s,k-1);
     }
-}; 
+    int countSubstr(string& s, int k) {
+           
+   return    countAtMostK(s,k)-countAtMostK(s,k-1);
+    }
+};

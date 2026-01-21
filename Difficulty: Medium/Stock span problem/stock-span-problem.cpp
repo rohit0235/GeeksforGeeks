@@ -1,63 +1,43 @@
-//{ Driver Code Starts
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
 class Solution {
   public:
-    // Function to calculate the span of stockâ€™s price for all n days.
     vector<int> calculateSpan(vector<int>& arr) {
-            
-           // 
-           stack<int>s;
-           int n=arr.size();
-            vector<int>ans(arr.size(),0);
-           for (int i=0;i<n;i++){
-                   
-                   while (!s.empty() && arr[s.top()]<=arr[i]){
-                       s.pop();
-                   }  
-                   
-                   if (s.empty()){
-                       ans[i]=i+1;
-                   }
-                   else{
-                       ans[i]=i-s.top();
-                   }
-                   
-                   s.push(i);
-                      
-           }
-           
-           return ans;
+        // code here
+        //  int n = arr.size();
+        //  vector<int>ans;
+        //  stack<pair<int,int>>st;
+         
+        //  for(int i:arr){
+                 
+        //          int  count =0;
+        //          while (!st.empty() && st.top().first<i){
+        //               st.pop();
+        //               count+=st.top().second;
+        //               cout<<count<<" ";
+        //          }
+                 
+        //          cout<<endl;
+        //         //  if(!st.empty()) {
+        //         //       count+=st.top().second;
+        //         //  }
+        //          ans.push_back(count+1);
+        //          st.push({i,count+1});
+               
+        //  }
+         
+        //  return ans;
+        
+         stack<int>st;
+        int n = arr.size();
+        vector<int>ans(n);
+        for(int i=0;i<n;i++){
+            int add = 1;
+            while(!st.empty() && arr[st.top()]<=arr[i]){
+                add += ans[st.top()];
+                st.pop();
+            }
+            st.push(i);
+            ans[i] = add;
+        }
+        return ans;
     }
 };
-
-
-//{ Driver Code Starts.
-
-int main() {
-    string ts;
-    getline(cin, ts);
-    int t = stoi(ts);
-    while (t--) {
-        vector<int> arr;
-        string input;
-        getline(cin, input);
-        stringstream ss(input);
-        int number;
-        while (ss >> number) {
-            arr.push_back(number);
-        }
-        Solution obj;
-        vector<int> ans = obj.calculateSpan(arr);
-        for (int i = 0; i < ans.size(); i++) {
-            cout << ans[i] << " ";
-        }
-        cout << endl;
-        cout << "~" << endl;
-    }
-    return 0;
-}
-// } Driver Code Ends

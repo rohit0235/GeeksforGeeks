@@ -1,83 +1,41 @@
-//{ Driver Code Starts
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
 class Solution {
-  public:
-  bool dfs(vector<vector<char>>& mat, int x, int y, string& word, int index, vector<vector<bool>>& visited) {
-    if (index == word.size()) return true;  // All characters matched
+public:
+    vector<int> delRow = {0, -1, 0, 1};
+    vector<int> delCol = {-1, 0, 1, 0};
+    bool dfs(int ind, int row, int col, vector<vector<char>>& mat, int n, int m,
+             string& word, vector<vector<int>>& vis) {
+        if (ind == word.size())
+            return true;
 
-    int n = mat.size();
-    int m = mat[0].size();
-
-    if (x < 0 || y < 0 || x >= n || y >= m || mat[x][y] != word[index] || visited[x][y]) {
+        for (int i = 0; i < 4; i++) {
+            int nRow = row + delRow[i];
+            int nCol = col + delCol[i];
+            if (nRow >= 0 && nRow < n && nCol >= 0 && nCol < m &&
+                mat[nRow][nCol] == word[ind] && vis[nRow][nCol] == -1) {
+                vis[nRow][nCol] = 1;
+                if (dfs(ind + 1, nRow, nCol, mat, n, m, word, vis))
+                    return true;
+                vis[nRow][nCol] = -1;
+            }
+        }
         return false;
     }
-
-    visited[x][y] = true;
-
-    // Directions: up, right, down, left
-    vector<int> dx = {-1, 0, 1, 0};
-    vector<int> dy = {0, 1, 0, -1};
-
-    for (int dir = 0; dir < 4; dir++) {
-        int newX = x + dx[dir];
-        int newY = y + dy[dir];
-
-        if (dfs(mat, newX, newY, word, index + 1, visited)) {
-            return true;
-        }
-    }
-
-    visited[x][y] = false;  // Backtrack
-    return false;
-}
-
-bool isWordExist(vector<vector<char>>& mat, string& word) {
-    int n = mat.size();
-    int m = mat[0].size();
-
-    vector<vector<bool>> visited(n, vector<bool>(m, false));
-
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++) {
-            if (mat[i][j] == word[0]) {
-                if (dfs(mat, i, j, word, 0, visited)) {
-                    return true;
+    bool isWordExist(vector<vector<char>>& mat, string& word) {
+        // Code here
+        int n = mat.size();
+        int m = mat[0].size();
+        vector<vector<int>> vis(n, vector<int>(m, -1));
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (mat[i][j] == word[0]) {
+                    vis[i][j] = 1;
+                    if (dfs(1, i, j, mat, n, m, word, vis))
+                        return true;
+                    vis[i][j] = -1;
                 }
             }
         }
+        return false;
     }
-    return false;
-}
-
 };
 
-//{ Driver Code Starts.
-int main() {
-    int tc;
-    cin >> tc;
-    while (tc--) {
-        int n, m;
-        cin >> n >> m;
-        vector<vector<char>> mat(n, vector<char>(m, '*'));
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < m; j++)
-                cin >> mat[i][j];
-        string word;
-        cin >> word;
-        Solution obj;
-        bool ans = obj.isWordExist(mat, word);
-        if (ans)
-            cout << "true\n";
-        else
-            cout << "false\n";
-
-        cout << "~"
-             << "\n";
-    }
-    return 0;
-}
-// } Driver Code Ends

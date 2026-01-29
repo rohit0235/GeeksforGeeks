@@ -2,23 +2,16 @@ class Solution {
   public:
     string firstNonRepeating(string &s) {
           
-          vector<int>ch(26,0);
-          queue<char>q;
-          for(int i=0;i<s.size();i++){
-                ch[s[i]-'a']++;
-                q.push(s[i]);
-                while (!q.empty() && ch[q.front()-'a']>1){
-                     q.pop();
-                }
-                if(!q.empty()){
-                     s[i] = q.front();
-                }else{
-                        s[i] = '#';
-                }
-                
-          }
-          
-          return s; 
+     vector<int> freq(26,0);
+        string ans="";
+        int i=0;
+        for(int j=0;j<s.length();j++){
+            freq[s[j]-'a']++;
+            while(i<=j && freq[s[i]-'a']!=1)i++;
+            if(i>j) ans.push_back('#');
+            else ans.push_back(s[i]);
+        }
+        return ans;
           
     }
 };

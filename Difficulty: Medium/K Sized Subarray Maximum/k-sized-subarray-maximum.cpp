@@ -4,25 +4,29 @@ class Solution {
          
         if (k==1) return arr;
         
-        priority_queue<pair<int,int>>pq;
+        deque<pair<int,int>>dq;
         vector<int>ans;
         
-        for(int i=0;i<k;i++){
-             pq.push({arr[i],i});
-         }
+        // for(int i=0;i<k;i++){
+        //      dq.push_back({arr[i],i});
+        //  }
         
-         ans.push_back(pq.top().first);
+        //  ans.push_back(dq.front().first);
          int n = arr.size();
-         for(int i=k;i<n;i++){
-                pq.push({arr[i],i});
-                int idx = pq.top().second;
+         for(int i=0;i<n;i++){
+                int idx = dq.front().second;
                 
                 while (idx<=i-k){
-                      pq.pop();
-                      idx = pq.top().second;
+                      dq.pop_front();
+                      idx = dq.front().second;
                 }
                 
-                ans.push_back(pq.top().first);
+                while (!dq.empty() && dq.back().first<=arr[i]){
+                      dq.pop_back();
+                }
+                
+                dq.push_back({arr[i],i});
+           if(i+1>=k)     ans.push_back(dq.front().first);
          }
          
          return ans;

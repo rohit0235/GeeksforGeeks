@@ -1,29 +1,33 @@
 class Solution {
   public:
-
     int maxCircularSum(vector<int> &arr) {
-   int n = arr.size();
-        
-        int maxKadane = INT_MIN, currentMax = 0;
-        
-        int minKadane = INT_MAX, currentMin = 0;
-        int totalSum = 0;
-        
-        for(int i=0; i<n; i++)
-        {
-            currentMax = max(arr[i], currentMax + arr[i]);
-            maxKadane = max(maxKadane, currentMax);
-            
-            currentMin = min(arr[i], currentMin + arr[i]);
-            minKadane = min(minKadane, currentMin);
-            
-            totalSum += arr[i];
-        }
-        
-        if(maxKadane < 0)
-            return maxKadane;
-            
-        return max(maxKadane, totalSum - minKadane);
-    }
+           
+           int n = arr.size();
+           
+           int mini = INT_MAX, minsum = 0;
+           int maxi = INT_MIN, maxsum = 0;
+           int total =0;
+           for(int i:arr){
+                    total+=i;
+                    
+                    minsum+=i;
+                    maxsum+=i;
+                    mini = min(mini, minsum);
+                    maxi = max(maxi, maxsum);
+                    if(minsum>0){
+                         minsum=0;
+                    }
+                    if(maxsum<0){
+                          maxsum=0;
+                    }
+                    
+                    
    
+           }
+           
+        //   cout<<maxi<<" "<<mini<<endl;
+          if(maxi<0) return maxi;
+           
+           return max(maxi, total-mini);
+    }
 };
